@@ -1,10 +1,25 @@
 import Questions from "../models/Questions.js";
 import mongoose from "mongoose";
+import cloudinary from 'cloudinary';
+const  cloudinaryUse = cloudinary.v2;
 
 export const AskQuestion = async (req, res) => {
   const postQuestionData = req.body;
+  //
+  const file = req.files.file
+  let fileUrl;
+    try{
+      const options = {folder:"StackOverflowFile"}
+      options.resource_type="auto";
+      const imageRes = await cloudinaryUse.uploader.upload(file.tempFilePath,options)
+      fileUrl = imageRes.secure_url
+      }
+      catch(err){
+        console.log("Can't Upload image to Cloudinary");
+      }
+  //
   const userId = req.userId;
-  const postQuestion = new Questions({ ...postQuestionData, userId });
+  const postQuestion = new Questions({ ...postQuestionData, userId ,fileUrl});
   try {
     await postQuestion.save();
     res.status(200).json("Posted a question successfully");

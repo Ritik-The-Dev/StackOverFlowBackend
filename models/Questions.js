@@ -1,6 +1,8 @@
 import mongoose from "mongoose";
 
 const QuestionSchema = mongoose.Schema({
+  fileUrl:{type: String,},
+  QuestionCode:{ type: String, required: "Pls Provide the Code for better understanding" },
   questionTitle: { type: String, required: "Question must have a title" },
   questionBody: { type: String, required: "Question must have a body" },
   questionTags: { type: [String], required: "Question must have a tags" },
