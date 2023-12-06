@@ -1,9 +1,9 @@
 import mongoose from "mongoose";
-import users from "../models/auth.js";
+import User from "../models/auth.js";
 
 export const getAllUsers = async (req, res) => {
   try {
-    const allUsers = await users.find();
+    const allUsers = await User.find();
     const allUserDetails = [];
     allUsers.forEach((user) => {
       allUserDetails.push({
@@ -29,7 +29,7 @@ export const updateProfile = async (req, res) => {
   }
 
   try {
-    const updatedProfile = await users.findByIdAndUpdate(
+    const updatedProfile = await User.findByIdAndUpdate(
       _id,
       { $set: { name: name, about: about, tags: tags } },
       { new: true }
