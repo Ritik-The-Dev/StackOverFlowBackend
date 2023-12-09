@@ -1,7 +1,5 @@
 import mongoose from "mongoose";
-const date = new Date();
-const month = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
-const DateNow = `${date.getDate()}-${month[date.getMonth()]}-${date.getFullYear()}`
+
 const VideoSchema = mongoose.Schema({
     videoUrl:{
         type:String
@@ -15,10 +13,7 @@ const VideoSchema = mongoose.Schema({
     email:{
         type:String,
     },
-    createAt:{
-        type:String,
-        default:DateNow
-    }
+    createAt:{ type: Date, default: Date.now }
 });
 
 export default mongoose.model("VideoSchema", VideoSchema);
