@@ -8,6 +8,8 @@ import answerRoutes from "./routes/Answers.js";
 import connectDB from "./connectMongoDb.js";
 import {cloudinaryConnect} from "./ConnectCloudinary.js"
 import fileUpload from "express-fileupload";
+import useragent from 'express-useragent';
+import requestIp from 'request-ip';
 dotenv.config();
 connectDB();
 const app = express();
@@ -15,6 +17,8 @@ app.use(cookieParser());
 app.use(express.json({ limit: "30mb", extended: true }));
 app.use(express.urlencoded({ limit: "30mb", extended: true }));
 app.use(cors());
+app.use(useragent.express());
+app.use(requestIp.mw());
 
 // app.use('/',(req, res) => {
 //     res.send("This is a stack overflow clone API")

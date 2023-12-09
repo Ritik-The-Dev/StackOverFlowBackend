@@ -9,6 +9,12 @@ const ImageSchema = mongoose.Schema({
     imageCaption:{
         type:String,
     },
+    postedBy:{
+        type:String,
+    },
+    email:{
+        type:String,
+    },
     createAt:{
         type:String,
         default:DateNow

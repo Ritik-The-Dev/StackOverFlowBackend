@@ -1,21 +1,16 @@
 import mongoose from "mongoose";
-const date = new Date();
-const month = ["Jan","Feb","Mar","Apr","May","June","July","Aug","Sep","Oct","Nov","Dec"];
-const DateNow = `${date.getDate()}-${month[date.getMonth()]}-${date.getFullYear()}`
+
 const loginHistorySchema = mongoose.Schema({
     email:{
         type:String
     },
     SystemInfo:{
-        type:String
+        type: mongoose.Schema.Types.Mixed,
     },
     IPAdress:{
         type:String
     },
-    loginAt:{
-        type:String,
-        default:DateNow
-    }
+    loginAt:{ type: Date, default: Date.now }
 });
 
 export default mongoose.model("loginHistorySchema", loginHistorySchema);

@@ -6,6 +6,12 @@ const TweetSchema = mongoose.Schema({
     tweet:{
         type:String
     },
+    postedBy:{
+        type:String,
+    },
+    email:{
+        type:String,
+    },
     createAt:{
         type:String,
         default:DateNow

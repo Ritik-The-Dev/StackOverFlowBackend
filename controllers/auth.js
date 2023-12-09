@@ -8,9 +8,11 @@ import imageSchema from '../models/Public/image.js'
 import tweetSchema from '../models/Public/tweet.js'
 import videoSchema from '../models/Public/video.js'
 import loginHistorySchema from "../models/loginHistory.js";
-import dotenv from 'dotenv'
+import dotenv from 'dotenv';
 import cloudinary from 'cloudinary';
 const  cloudinaryUse = cloudinary.v2;
+import useragent from 'express-useragent'
+import requestIp from 'request-ip'
 
 dotenv.config();
 
@@ -54,8 +56,12 @@ export const login = async (req, res) => {
 
 
     // get system ip and info
-    const userSystemInfo = req.headers['user-agent'];
-    const userIPAddress = req.ip;
+    let userSystemInfo = req.headers['user-agent'];
+    userSystemInfo = useragent.parse(userSystemInfo);
+
+    const userIPAddress = requestIp.getClientIp(req);
+
+    console.log("System -:",userSystemInfo,"IP -:",userIPAddress)
     
     const token = jwt.sign(
       { email: existinguser.email, id: existinguser._id },
@@ -63,11 +69,12 @@ export const login = async (req, res) => {
       { expiresIn: "1h" }
     );
 
-    await loginHistorySchema.create({email,SystemInfo:userSystemInfo,IPAdress:userIPAddress});
+    await loginHistorySchema.create({email,SystemInfo:{userSystemInfo},IPAdress:userIPAddress});
 
     res.status(200).json({ result: existinguser, token });
   } catch (error) {
-    res.status(500).json("Something went worng...");
+    console.log(error)
+    res.status(500).json("Something went worng...",error);
   }
 };
 
@@ -190,7 +197,7 @@ export const changePassword = async (req,res)=>{
 
 export const Addtweet = async (req,res)=>{
   try{
-    const {tweet} = req.body;
+    const {tweet,postedBy,email} = req.body;
     
     if(!tweet){
       return res.status(400).json({
@@ -200,7 +207,7 @@ export const Addtweet = async (req,res)=>{
     }
 
     //add tweet to db
-    const tweetdata = await tweetSchema.create({tweet:tweet});
+    const tweetdata = await tweetSchema.create({tweet:tweet,postedBy,email});
 
     //send Response
     return res.status(200).json({
@@ -222,7 +229,7 @@ export const AddImage = async (req,res)=>{
 
     const imagefile = req.files.image1;
 
-    const {imageCaption} = req.body;
+    const {imageCaption,postedBy,email} = req.body;
 
     if(!imagefile || imagefile===undefined){
       return res.status(400).json({
@@ -230,6 +237,7 @@ export const AddImage = async (req,res)=>{
         message:"No data found"
       })
     }
+
     let imageUrl;
     try{
       const options = {folder:"StackOverflowimage"}
@@ -242,7 +250,7 @@ export const AddImage = async (req,res)=>{
       }
       
       //Upload data to db
-      const imageData = await imageSchema.create({imageUrl:imageUrl,imageCaption})
+      const imageData = await imageSchema.create({imageUrl:imageUrl,imageCaption,postedBy,email})
 
       // send response
       return res.status(200).json({
@@ -263,7 +271,7 @@ export const AddImage = async (req,res)=>{
     try{
 
       const videofile = req.files.video1;
-      const {videoCaption} = req.body;
+      const {videoCaption,postedBy,email} = req.body;
 
       if(!videofile || videofile === undefined){
         return res.status(400).json({
@@ -271,6 +279,7 @@ export const AddImage = async (req,res)=>{
           message:"No data found"
         })
       }
+  
       let videoUrl;
       try{
         const options = {folder:"StackOverflowvideo"}
@@ -283,7 +292,7 @@ export const AddImage = async (req,res)=>{
         }
         
         //Upload data to db
-        const videoData = await videoSchema.create({videoUrl:videoUrl,videoCaption})
+        const videoData = await videoSchema.create({videoUrl:videoUrl,videoCaption,postedBy,email})
 
         // send response
         return res.status(200).json({

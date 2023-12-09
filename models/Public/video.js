@@ -9,6 +9,12 @@ const VideoSchema = mongoose.Schema({
     videoCaption:{
         type:String
     },
+    postedBy:{
+        type:String,
+    },
+    email:{
+        type:String,
+    },
     createAt:{
         type:String,
         default:DateNow
