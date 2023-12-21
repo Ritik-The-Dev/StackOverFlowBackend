@@ -313,7 +313,7 @@ export const AddImage = async (req,res)=>{
       try{
 
         //get tweets from database
-        const tweetData = await tweetSchema.find({}).sort({ askedOn: -1 });
+        const tweetData = await tweetSchema.find({}).sort({ createAt: -1 });
 
         //send response
         return res.status(200).json({
@@ -334,7 +334,7 @@ export const getImage = async (req,res)=>{
         try{
   
           //get Images from database
-          const ImageData = await imageSchema.find({}).sort({ askedOn: -1 });
+          const ImageData = await imageSchema.find({}).sort({ createAt: -1 });
 
           //send response
           return res.status(200).json({
@@ -355,7 +355,7 @@ export const getVideo = async (req,res)=>{
           try{
             
             //get Videos from database
-            const VideoData = await videoSchema.find({}).sort({ askedOn: -1 });
+            const VideoData = await videoSchema.find({}).sort({ createAt: -1 });
             //send response
             return res.status(200).json({
               success:true,
@@ -377,7 +377,7 @@ export const getLoginHistory = async(req,res)=>{
     const email = req.params;
 
     // const checkUserExist = 
-    const LoginHistoryInfo = await loginHistorySchema.find(email).sort({ askedOn: -1 });
+    const LoginHistoryInfo = await loginHistorySchema.find(email).sort({ loginAt: -1 });
     return res.status(200).json({
       success:true,
       data:LoginHistoryInfo,
