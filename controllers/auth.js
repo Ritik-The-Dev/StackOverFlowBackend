@@ -33,7 +33,7 @@ export const signup = async (req, res) => {
     const token = jwt.sign(
       { email: newUser.email, id: newUser._id },
       process.env.JWT_SECRET,
-      {  expiresIn: "3d" }
+      {  expiresIn: "30d" }
     );
     res.status(200).json({ result: newUser, token });
   } catch (error) {
