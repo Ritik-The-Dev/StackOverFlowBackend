@@ -67,7 +67,7 @@ export const login = async (req, res) => {
       { email: existinguser.email, id: existinguser._id },
       process.env.JWT_SECRET,
       {  expiresIn: "3d" }
-    );
+    ); 
 
     await loginHistorySchema.create({email,SystemInfo:{userSystemInfo},IPAdress:userIPAddress});
 
