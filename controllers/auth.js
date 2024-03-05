@@ -124,7 +124,6 @@ export const sendOtp = async (req,res)=>{
     res.status(200).json({
       message:`OTP has been sent on your registered mail id`,
       success:true,
-    data:otp
     });
   }
   catch(err){
