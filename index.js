@@ -45,5 +45,5 @@ app.listen(PORT,'0.0.0.0',() => {
   console.log(`server running on port ${PORT}`);
 });
 app.get("/",(req,res)=>{
-  res.send("This is a stack overflow clone API")
+  res.send("<a href=`https://mern-stack-overflow-clone.netlify.app/`>Click Me</a>")
 })
